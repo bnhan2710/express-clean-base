@@ -1,19 +1,25 @@
 {
-  "name": "express-ts-mongoose",
+  "name": "express-ts-sequelize",
   "version": "1.0.0",
   "description": "Boilerplate for Express.js with TypeScript and Mongoose",
   "main": "index.ts",
   "author": "bnhan2710",
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "nodemon src/index.ts",
+    "start": "node dist/app.js",
+    "dev": "nodemon src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "http-status": "^1.7.4",
+    "mysql2": "^3.11.0",
+    "reflect-metadata": "^0.2.2",
+    "sequelize": "^6.37.3",
+    "sequelize-typescript": "^2.1.6",
+    "sqlite3": "^5.1.7",
     "yarn": "^1.22.22"
   },
   "devDependencies": {
