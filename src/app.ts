@@ -1,24 +1,29 @@
 import 'reflect-metadata';
 import express , {Express , Request , Response} from 'express';
-import dotenv from 'dotenv';
+import morgan from 'morgan';
+import cors from 'cors';
+import helmet from 'helmet';
 import { NOT_FOUND } from 'http-status';
-dotenv.config();
-const app:Express = express();
-const PORT = process.env.PORT || 8000;
-import dbconfig from './configs/database.config';
+import env from './env'
 
-//Connect DB
-dbconfig.connectDB();
+const PORT : string | undefined = env.ENV_SERVER.PORT || '3000';
+const app:Express = express();
+
+//Connection to database
+import './configs/database.config';
 
 //Middlewware
 app.use(express.json())
+app.use(cors());
+app.use(helmet());
+app.use(morgan('tiny'));
 app.use(express.urlencoded({extended:true}));
 
-app.use('*', (req, res) => res.status(NOT_FOUND).json({
+app.use('*', (req : Request, res : Response) => res.status(NOT_FOUND).json({
     status: NOT_FOUND,
     message: `Can not GET ${req.originalUrl}`,
 }));
 
-app.listen(PORT , () => {  
+app.listen(PORT, () => {  
     console.log(`Server is running on http://localhost:${PORT}`);
 })
