@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const ENV_SERVER = {
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    SECRET_KEY : process.env.SECRET_KEY
 }
 
 const ENV_DATABASE = {
