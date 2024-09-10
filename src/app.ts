@@ -5,7 +5,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { NOT_FOUND } from 'http-status';
 import env from './env'
-import v1API from './modules/routes/v1.route';
+import v1API from './routes/v1.route';
+import {errorHandler} from './errors/errorHandler'
 
 const PORT : string | undefined = env.ENV_SERVER.PORT || '3000';
 const app:Express = express();
@@ -20,8 +21,11 @@ app.use(helmet());
 app.use(morgan('tiny'));
 app.use(express.urlencoded({extended:true}));
 
-//v1 Route
+//v1 Routes
 app.use('/api/v1', v1API);
+
+//Error Handler
+app.use(errorHandler)
 
 app.use('*', (req : Request, res : Response) => res.status(NOT_FOUND).json({
     status: NOT_FOUND,

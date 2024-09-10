@@ -15,7 +15,6 @@ export const comparePassword = (password: string, hash: string): boolean => {
     try {
         return bcrypt.compareSync(password, hash);
     } catch (error) {
-        console.error('Error comparing password:', error);
         throw new Error('Password comparison failed');
     }
 };
