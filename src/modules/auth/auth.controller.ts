@@ -5,6 +5,7 @@ import { LoginDTO, RegisterDTO } from './dto';
 class AuthController {
     public async login(req: Request, res: Response, next : NextFunction){
         const loginDto = LoginDTO(req.body);
+        
         res.send(await AuthService.login(loginDto))
     }
     public async register(req: Request, res: Response, next : NextFunction){

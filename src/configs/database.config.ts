@@ -15,7 +15,6 @@ const connection = new DataSource({
   logging: false,      
   subscribers: [],
   migrations: [__dirname + "/../migrations/*.ts"],
-  // entities: [__dirname + "/../entities/*.ts"]
   entities: [User]
 });
 

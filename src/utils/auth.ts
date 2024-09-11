@@ -1,11 +1,13 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-
-const SECRET_KEY = 'your-secret-key';
+import env from '../env';
 
 export const generateAccessToken = (data: string | object): string => {
     try {
-        return jwt.sign({ data }, SECRET_KEY, { expiresIn: 60 * 60 });
+        if (!env.ENV_SERVER.SECRET_KEY) {
+            throw new Error('SECRET_KEY is not defined');
+        }
+        return jwt.sign({ data }, env.ENV_SERVER.SECRET_KEY, { expiresIn: 60 * 60 });
     } catch (error) {
         throw new Error('Token generation failed');
     }
@@ -21,7 +23,10 @@ export const comparePassword = (password: string, hash: string): boolean => {
 
 export const verifyToken = (token: string): any => {
     try {
-        return jwt.verify(token, SECRET_KEY);
+        if (!env.ENV_SERVER.SECRET_KEY) {
+            throw new Error('SECRET_KEY is not defined');
+        }
+        return jwt.verify(token, env.ENV_SERVER.SECRET_KEY);
     } catch (error) {
         throw new Error('Token verification failed');
     }
