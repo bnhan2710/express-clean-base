@@ -15,7 +15,7 @@ export class User {
    email!: string
 
   @Column({type: "varchar", length: 255 , nullable: true})
-    fullName?: string 
+    fullName?: string
 }
 
 

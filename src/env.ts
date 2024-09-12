@@ -1,3 +1,4 @@
+import { Secret } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -15,7 +16,10 @@ const ENV_DATABASE = {
     DB_NAME: process.env.DB_NAME
 }
 
+const SECRET_KEY: Secret = process.env.SECRET_KEY as string;
+
 export default {
     ENV_SERVER,
-    ENV_DATABASE
+    ENV_DATABASE,
+    SECRET_KEY,
 }

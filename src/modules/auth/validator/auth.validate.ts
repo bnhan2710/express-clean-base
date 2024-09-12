@@ -14,6 +14,7 @@ export const registerValid = Joi.object({
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
     .required(),
     fullName: Joi.string().min(10).max(255)
-    .required(),
 })
+export const resetPasswordValid = Joi.object({
 
+})
