@@ -4,7 +4,12 @@ dotenv.config();
 
 const ENV_SERVER = {
     PORT: process.env.PORT,
-    SECRET_KEY : process.env.SECRET_KEY
+    SECRET_KEY : process.env.SECRET_KEY,
+}
+
+const ENV_EMAIL = {
+    EMAIL: process.env.EMAIL,
+    PASSWORD: process.env.EMAIL_PASSWORD
 }
 
 const ENV_DATABASE = {
@@ -22,4 +27,5 @@ export default {
     ENV_SERVER,
     ENV_DATABASE,
     SECRET_KEY,
+    ENV_EMAIL
 }

@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import env from '../env';
-
+import crypto from 'crypto'
 export const generateAccessToken = (data: string | object): string => {
     try {
         if (!env.SECRET_KEY) {
@@ -30,8 +30,6 @@ export const hashPassword = (password: string): string => {
     }
 };
 
-// export const checkOTP = (OTP:number) : boolean => {
-//     try{
-
-//     }catch
-// }
+export const generateResetpasswordToken = (): string =>{
+    return crypto.randomBytes(10).toString()
+}

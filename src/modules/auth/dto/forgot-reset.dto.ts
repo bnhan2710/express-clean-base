@@ -1,13 +1,12 @@
-export interface ForgotPasswordDto {
-    OTP:number;
+export interface ResetPasswordDto {
     newPassword:string
     confirmPassword:string
-}
+};
 
-export function ForgotPasswordDTO(body:any) : ForgotPasswordDto{
+export function ResetPasswordDTO(body:any) : ResetPasswordDto{
     return {
-        OTP : body.OTP,
         newPassword: body.newPassword,
         confirmPassword:body.confirmPassword
-    }
+    };
 }
+

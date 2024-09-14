@@ -1,11 +1,11 @@
-import { LoginDto, RegisterDto } from "./dto";
+import { LoginDto, RegisterDto , ResetPasswordDto} from "./dto";
 import connection from "../../configs/database.config";
 import { User } from "../../orm/entities/User";
-import {generateAccessToken , hashPassword , comparePassword} from '../../utils/auth'
+import {generateAccessToken , hashPassword , comparePassword, generateResetpasswordToken} from '../../utils/auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../errors/error.response'
-import { loginValid , registerValid } from "./validator/auth.validate";
-import { register } from "module";
-import { ForgotPasswordDto } from './dto/forgot.dto';
+import { emailValid, loginValid , registerValid } from "./validator/auth.validate";
+import { sendMail } from "../../utils/sendMail.util";
+import env from '../../env'
 class AuthService {
     public async login(loginDto: LoginDto):Promise<{accessToken: string} | undefined>{
         const {error} = loginValid.validate(loginDto)
@@ -29,7 +29,6 @@ class AuthService {
             }
     }
 
-
     public async register(registerDto: RegisterDto):Promise<void>{
             const {error} = registerValid.validate(registerDto)
             if(error){
@@ -41,11 +40,57 @@ class AuthService {
             }
             registerDto.password = await hashPassword(registerDto.password)
             await connection.getRepository(User).save(registerDto)
-            return;
+            return
        }
-    public async forgotPassword(forgotPasswordDto:ForgotPasswordDto):Promise<void>{
-
+    public async forgotPassword(email:string):Promise<void>{
+            const {error} = emailValid.validate({email})
+            if(error){
+                throw new BadRequestError(error.message)
+            }
+           const checkEmail = await connection.getRepository(User).findOne({where:{email}})
+           if(!checkEmail){
+                throw new NotFoundError('Email is not registered')
+           }
+         const token = await generateResetpasswordToken();
+         const expTime = new Date(Date.now() + 3600000)
+         
+          await connection.getRepository(User).update(
+            { email },
+            {
+                resetPasswordToken: token,
+                resetPasswordExpires: expTime.getDate()
+            }
+         )
+         sendMail(email,'Reset Your Password','Reset Password','If you requested a password reset, click the button below to reset it:',`http://localhost:${env.ENV_SERVER.PORT}/reset-password/${token}`)
+            return
+    }
+    public async resetPassword(tokenReset:string, resetPasswordDto : ResetPasswordDto):Promise<void>{
+            const token = await connection.getRepository(User).findOne(
+                {where:{
+                resetPasswordToken:tokenReset,
+            }, select: { 
+                resetPasswordToken:true,
+                resetPasswordExpires: true }})
+            if(!token || !token.resetPasswordToken){
+                throw new AuthFailError('Token is not valid')
+            } 
+            if(!token.resetPasswordExpires || new Date(token.resetPasswordExpires).getTime() < Date.now()){
+                throw new AuthFailError('Token is expired')
+            }
+            if(resetPasswordDto.newPassword !== resetPasswordDto.confirmPassword){
+                throw new BadRequestError('Password and confirm password not match')
+            }
+            const password = await hashPassword(resetPasswordDto.newPassword)
+            await connection.getRepository(User).update(
+                {resetPasswordToken:tokenReset},
+                {
+                    password,
+                    resetPasswordToken: undefined,
+                    resetPasswordExpires: undefined
+                }
+            )
+            return
     }
 }
     
-export default new AuthService;
+export default new AuthService

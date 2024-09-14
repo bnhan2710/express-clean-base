@@ -42,7 +42,7 @@ export class ConflictRequestError extends CustomError{
     readonly status = ReasonPhrases.CONFLICT
     readonly logging = false     
     constructor(message:string){
-        super(message)
+        super(message);
     }
 }
 
