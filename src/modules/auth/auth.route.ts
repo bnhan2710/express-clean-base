@@ -10,6 +10,6 @@ router.post('/login', asyncHandler(AuthController.login));
 //FORFOT PASSWORD
 router.post('/forgot-password', asyncHandler(AuthController.forgotPassword))
 //RESET PASSWORD 
-router.post('/reset-password', )
+router.post('/reset-password/:token', asyncHandler(AuthController.resetPassword))
 
 export default router;

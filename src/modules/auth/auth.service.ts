@@ -52,16 +52,15 @@ class AuthService {
                 throw new NotFoundError('Email is not registered')
            }
          const token = await generateResetpasswordToken();
-         const expTime = new Date(Date.now() + 3600000)
-         
+            const expTime = new Date(Date.now() + 3600000);
           await connection.getRepository(User).update(
             { email },
             {
                 resetPasswordToken: token,
-                resetPasswordExpires: expTime.getDate()
+                resetPasswordExpires: expTime
             }
          )
-         sendMail(email,'Reset Your Password','Reset Password','If you requested a password reset, click the button below to reset it:',`http://localhost:${env.ENV_SERVER.PORT}/reset-password/${token}`)
+         sendMail(email,'Reset Your Password','Reset Password','If you requested a password reset, click the button below to reset it:',`http://localhost:${env.ENV_SERVER.PORT}/api/v1/auth/reset-password/${token}`)
             return
     }
     public async resetPassword(tokenReset:string, resetPasswordDto : ResetPasswordDto):Promise<void>{
@@ -75,22 +74,23 @@ class AuthService {
                 throw new AuthFailError('Token is not valid')
             } 
             if(!token.resetPasswordExpires || new Date(token.resetPasswordExpires).getTime() < Date.now()){
+                await connection.getRepository(User).update({resetPasswordToken: tokenReset}, {resetPasswordToken: undefined, resetPasswordExpires: undefined})
                 throw new AuthFailError('Token is expired')
             }
             if(resetPasswordDto.newPassword !== resetPasswordDto.confirmPassword){
                 throw new BadRequestError('Password and confirm password not match')
             }
-            const password = await hashPassword(resetPasswordDto.newPassword)
+            const hashedPassword = await hashPassword(resetPasswordDto.newPassword)
             await connection.getRepository(User).update(
-                {resetPasswordToken:tokenReset},
+                { resetPasswordToken: tokenReset },
                 {
-                    password,
+                    password:hashedPassword,
                     resetPasswordToken: undefined,
                     resetPasswordExpires: undefined
                 }
-            )
+            );
             return
     }
 }
-    
+
 export default new AuthService

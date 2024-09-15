@@ -12,7 +12,8 @@ const connection = new DataSource({
   password: env.ENV_DATABASE.DB_PASSWORD || 'yourpassword',
   database: env.ENV_DATABASE.DB_NAME || 'database',
   synchronize: true,  
-  logging: false,      
+  logging: false, 
+  logger: "advanced-console",     
   subscribers: [],
   migrations: [__dirname + "/../migrations/*.ts"],
   entities: [User]

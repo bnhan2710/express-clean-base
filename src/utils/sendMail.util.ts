@@ -49,11 +49,11 @@ const mailOptions: mailOptionType = {
   <body>
     <h1>${title}</h2>
     <p>${text}</p>
+    <h2>${link}</h2>
     <a href="${link}" class="button">${subject}</a>
   </body>
 </html>
 `
 };
-
   return transporter.sendMail(mailOptions);
 }

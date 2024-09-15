@@ -20,8 +20,8 @@ export class User {
   @Column({type: "varchar", length: 255 , nullable: true})
     resetPasswordToken?: string
     
-  @Column({type: "int", nullable: true})
-    resetPasswordExpires?: number
+  @Column({type: "datetime", nullable: true})
+    resetPasswordExpires?: Date
 
 }
 

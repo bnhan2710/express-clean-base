@@ -2,6 +2,7 @@
 import { NextFunction, Request, Response } from 'express';
 import AuthService from './auth.service';
 import { LoginDTO, RegisterDTO} from './dto';
+import { ResetPasswordDTO, ResetPasswordDto } from './dto/forgot-reset.dto';
 class AuthController {
     public async login(req: Request, res: Response, next : NextFunction){
         const loginDto = LoginDTO(req.body);
@@ -16,6 +17,12 @@ class AuthController {
     public async forgotPassword(req:Request ,res: Response, next: NextFunction){
         await AuthService.forgotPassword(req.body.email);
         res.send({message: 'Email has been sent, Please check your email to reset your password'})
+    }
+    public async resetPassword(req:Request ,res: Response, next: NextFunction){
+        const token = req.params.token as string;
+        const resetPasswordDto = ResetPasswordDTO(req.body);
+        await AuthService.resetPassword(token, resetPasswordDto);
+        res.send({message: 'Password has been reset successfully'})
     }
 }
 

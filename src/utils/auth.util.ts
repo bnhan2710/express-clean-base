@@ -31,5 +31,5 @@ export const hashPassword = (password: string): string => {
 };
 
 export const generateResetpasswordToken = (): string =>{
-    return crypto.randomBytes(10).toString()
+    return crypto.randomBytes(10).toString('hex');
 }
