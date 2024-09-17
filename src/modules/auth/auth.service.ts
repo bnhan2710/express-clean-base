@@ -30,10 +30,10 @@ class AuthService {
     }
 
     public async register(registerDto: RegisterDto):Promise<void>{
-            const {error} = registerValid.validate(registerDto)
-            if(error){
-                throw new BadRequestError(error.message)
-            }
+            // const {error} = registerValid.validate(registerDto)
+            // if(error){
+            //     throw new BadRequestError(error.message)
+            // }
             const ExitsUser = await connection.getRepository(User).findOne({ where: { username: registerDto.username } });
             if(ExitsUser){
                 throw new ConflictRequestError('User already exits')

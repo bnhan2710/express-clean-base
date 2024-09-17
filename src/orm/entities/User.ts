@@ -17,12 +17,14 @@ export class User {
   @Column({type: "varchar", length: 255 , nullable: true})
     fullName?: string
 
-  @Column({type: "varchar", length: 255 , nullable: true})
+  @Column({type: "varchar", length: 255, default :null , nullable: true})
     resetPasswordToken?: string
     
-  @Column({type: "datetime", nullable: true})
+  @Column({type: "datetime", default :null , nullable: true})
     resetPasswordExpires?: Date
-
+    
+  @Column({type: 'boolean', default: false})
+    isVetificationEmail!: boolean;
 }
 
 
