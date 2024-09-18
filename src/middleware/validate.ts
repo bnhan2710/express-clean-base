@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { loginValid, registerValid, resetPasswordValid, emailValid } from '../modules/auth/validator/auth.validate';
 import { BadRequestError } from '../errors/error.response';
 
 const validate = (schema: any) => {
@@ -12,13 +11,4 @@ const validate = (schema: any) => {
     };
 };
 
-const authValidation = {
-    login: validate(loginValid),
-    register: validate(registerValid),
-    resetPassword: validate(resetPasswordValid),
-    email: validate(emailValid),
-}
-
-export default {
-    authValidation
-};
+export default validate;

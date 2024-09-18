@@ -1,7 +1,7 @@
 import { DataSource } from "typeorm";
 import env from "../env";
 import { User } from "../orm/entities/User";
-
+import { Token } from "../orm/entities/Token";
 const databaseType = env.ENV_DATABASE.DB_DIALECT as "mysql" | "mariadb" | "postgres" | "sqlite" | "oracle" | "mssql";
 
 const connection = new DataSource({
@@ -16,7 +16,7 @@ const connection = new DataSource({
   logger: "advanced-console",     
   subscribers: [],
   migrations: [__dirname + "/../migrations/*.ts"],
-  entities: [User]
+  entities: [User , Token]
 });
 
 const ConnectDB = async (): Promise<void> => {

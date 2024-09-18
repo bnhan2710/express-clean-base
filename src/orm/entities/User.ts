@@ -1,4 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm"
+import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm"
+import { Token } from "./Token"
 
 @Entity('users')
 export class User {
@@ -17,14 +18,11 @@ export class User {
   @Column({type: "varchar", length: 255 , nullable: true})
     fullName?: string
 
-  @Column({type: "varchar", length: 255, default :null , nullable: true})
-    resetPasswordToken?: string
-    
-  @Column({type: "datetime", default :null , nullable: true})
-    resetPasswordExpires?: Date
-    
   @Column({type: 'boolean', default: false})
     isVetificationEmail!: boolean;
+
+  @OneToMany(() => Token, token => token.user)
+    tokens!: Token[];
 }
 
 

@@ -35,19 +35,6 @@ export class UserTable implements MigrationInterface {
                     length: "255",
                     isNullable: true
                 },
-                {
-                    name: "resetPasswordToken",
-                    type: "varchar",
-                    length: "255",
-                    isNullable: true,
-                    default: null
-                },
-                {
-                    name: "resetPasswordExpires",
-                    type: "datetime",
-                    isNullable: true,
-                    default: null
-                }
             ]
         }), true);
     }

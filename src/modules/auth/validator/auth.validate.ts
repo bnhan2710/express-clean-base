@@ -1,11 +1,11 @@
 import Joi from 'joi'
-export const loginValid = Joi.object({
+export const loginValidation = Joi.object({
     username: Joi.string().min(3).max(255)
     .required(),
     password: Joi.string().min(5).max(255)
     .required(),
 })
-export const registerValid = Joi.object({
+export const registerValidation = Joi.object({
     username: Joi.string().min(3).max(255)
     .required(),
     password: Joi.string().min(5).max(255)
@@ -16,12 +16,12 @@ export const registerValid = Joi.object({
     fullName: Joi.string().min(10).max(255)
 })
 
-export const resetPasswordValid = Joi.object({
+export const resetPasswordValidation = Joi.object({
     newPassword: Joi.string().min(5).max(255).required(),
     confirmPassword: Joi.string().min(5).max(255).required()
 })
 
-export const emailValid = Joi.object({
+export const emailValidation = Joi.object({
     email: Joi.string()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
     .required(),
