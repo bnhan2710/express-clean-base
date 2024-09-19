@@ -1,8 +1,8 @@
 import { LoginDto, RegisterDto , ResetPasswordDto} from "./dto";
 import connection from "../../configs/database.config";
 import { User } from "../../orm/entities/User";
-import { Token } from "../../orm/entities/Token"
-import {generateAccessToken , hashPassword , comparePassword, generateToken} from '../../utils/auth.util'
+import { Token } from '../../orm/entities/Token';
+import { generateAccessToken , hashPassword , comparePassword, generateToken } from '../../utils/auth.util'
 import { ConflictRequestError, NotFoundError , AuthFailError, BadRequestError } from '../../errors/error.response'
 import { sendMail } from "../../utils/sendMail.util";
 import { TokenTypes } from "../../common/enums/tokens";
@@ -44,7 +44,6 @@ class AuthService {
            }
          const token = await generateToken();
             const expires = new Date(Date.now() + 3600000);
-            console.log(checkUser.id)
             await connection.getRepository(Token).save({
                 token,
                 type:TokenTypes.RESET_PASSWORD,
@@ -63,13 +62,12 @@ class AuthService {
                 where: { token: tokenReset },
                 relations: ['user']
             });
-            console.log(token)
             if (!token) {
-                throw new AuthFailError('Token is not valid');
+                throw new AuthFailError('URL is not valid');
             }
             if (new Date(token.expires).getTime() < Date.now()) {
                 await queryRunner.manager.getRepository(Token).delete({ token: tokenReset });
-                throw new AuthFailError('Token is expired');
+                throw new AuthFailError('URL is expired');
             }
             if (resetPasswordDto.newPassword !== resetPasswordDto.confirmPassword) {
                 throw new BadRequestError('Password and confirm password do not match');
@@ -86,6 +84,52 @@ class AuthService {
             await queryRunner.release();
         }
     }
+    public async sendVerificationEmail(id : number){
+        const user = await connection.getRepository(User).findOne({ where: { id } })
+        if(!user){
+            throw new NotFoundError('Username not found!')
+        }
+        if(user?.isVetificationEmail){
+            throw new BadRequestError('Email already vetification')
+        }
+        const token = generateToken();
+        const expires = new Date(Date.now() + 3600000);
+        await connection.getRepository(Token).save({
+            token,
+            type:TokenTypes.VERIFY_EMAIL,
+            expires,
+            user: user
+        })
+        sendMail(user.email,'Vetification Email','Vetification Email','Click the button below vetification your email:',`http://localhost:${env.ENV_SERVER.PORT}/api/v1/auth/verify-email/${token}`)
+        return
+    }
+    public async verifyEmail(token: string  ) {
+            const queryRunner = connection.createQueryRunner();
+            await queryRunner.startTransaction();
+            try {
+                const tokenEntity = await queryRunner.manager.getRepository(Token).findOne({
+                    where: { token },
+                    relations: ['user']
+                });
+                if (!tokenEntity) {
+                    throw new AuthFailError('URL is not valid');
+                }
+                if (new Date(tokenEntity.expires).getTime() < Date.now()) {
+                    await queryRunner.manager.getRepository(Token).delete({ token });
+                    throw new AuthFailError('URL is expired');
+                }
+                await queryRunner.manager.getRepository(User).update({ id: tokenEntity.user.id }, { isVetificationEmail: true });
+                await queryRunner.manager.getRepository(Token).delete({token});
+                await queryRunner.commitTransaction();
+            } catch (error) {
+                await queryRunner.rollbackTransaction();
+                console.log(error)
+                throw error;
+            } finally {
+                await queryRunner.release();
+            }
+    }
 }
+
 
 export default new AuthService

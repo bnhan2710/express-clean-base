@@ -1,9 +1,9 @@
 import { Router } from "express";
 const router = Router()
-import {checkAuthToken} from '../../middleware/checkAuthToken'
+import {AuthToken} from '../../middleware/checkAuthToken'
 import UsersController from "./users.controller";
 import asyncHandler from '../../middleware/asyncHandle';
 
-router.get('/me' , checkAuthToken , asyncHandler(UsersController.getMe))
+router.get('/me' , AuthToken , asyncHandler(UsersController.getMe))
 
 export default router

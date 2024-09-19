@@ -8,10 +8,10 @@ interface CustomRequest extends Request {
     user?: string | JwtPayload;
 }
 
-export function checkAuthToken(req: CustomRequest, res: Response, next: NextFunction): void {
+export function AuthToken(req: CustomRequest, res: Response, next: NextFunction): void {
     const token = req.header('Authorization')?.replace('Bearer ','')
     if(!token){
-        throw new AuthFailError('Token is required')
+        throw new AuthFailError('You need to login to access');
     }
     jwt.verify(token, env.SECRET_KEY, (err, user) => {
         if (err) {
