@@ -8,6 +8,7 @@ router.get('/me' , AuthToken , asyncHandler(UsersController.getMe))
 //USE FOR ADMIN
 router.get('/:id', AuthToken, asyncHandler(UsersController.getOne))
 router.get('/', asyncHandler(UsersController.getAll))
-router.post('/:id', AuthToken , asyncHandler(UsersController.updateUserById))
 router.patch('/:id', AuthToken ,asyncHandler(UsersController.updateUserById))
+router.delete('/:id', AuthToken , asyncHandler(UsersController.deleteUserById))
+
 export default router
