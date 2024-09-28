@@ -1,3 +1,0 @@
-apis:
-  src/libs/swagger/docs.yaml:
-    alias: apis-documentation
