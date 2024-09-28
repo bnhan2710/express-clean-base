@@ -2,7 +2,7 @@
   "name": "express-ts-typeorm",
   "version": "1.0.0",
   "description": "Boilerplate for Express.js with TypeScript and TypeORM",
-  "main": "index.ts",
+  "main": "app.ts",
   "author": "bnhan2710",
   "scripts": {
     "build": "npx tsc",
