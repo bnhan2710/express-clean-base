@@ -19,6 +19,8 @@ export class BadRequestError extends CustomError {
     }
 }
 
+
+
 export class NotFoundError extends CustomError {
     readonly statusCode = StatusCodes.NOT_FOUND;
     readonly status = ReasonPhrases.NOT_FOUND;

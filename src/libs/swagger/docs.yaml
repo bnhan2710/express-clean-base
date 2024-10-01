@@ -29,7 +29,7 @@ paths:
               properties:
                 username:
                   type: string
-                  example: user1
+                  example: user1          
                 password:
                   type: string
                   example: '12345'

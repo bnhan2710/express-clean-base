@@ -10,11 +10,11 @@ class UserController {
     public async getMe(req: CustomRequest , res: Response, next :NextFunction){
       res.status(StatusCodes.OK).json(await UserService.getMe(req.user.id))
     }
-    public async getAll(req:Request, res: Response , next:NextFunction){
+    public async getAllUser(req:Request, res: Response , next:NextFunction){
       const users = await UserService.getAll();
       res.status(StatusCodes.OK).json(users)
     } 
-    public async getOne(req:Request, res: Response, next:NextFunction){
+    public async getUserById(req:Request, res: Response, next:NextFunction){
       const id = parseInt(req.params.id)
       const user = await UserService.getOneUserById(id);
       res.status(StatusCodes.OK).json(user)

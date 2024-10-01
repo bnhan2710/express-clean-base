@@ -78,7 +78,6 @@ class AuthService {
             await queryRunner.commitTransaction();
         } catch (error) {
             await queryRunner.rollbackTransaction();
-            console.log(error)
             throw error;
         } finally {
             await queryRunner.release();
@@ -103,6 +102,7 @@ class AuthService {
         sendMail(user.email,'Vetification Email','Vetification Email','Click the button below vetification your email:',`http://localhost:${env.ENV_SERVER.PORT}/api/v1/auth/verify-email/${token}`)
         return
     }
+    
     public async verifyEmail(token: string  ) {
             const queryRunner = connection.createQueryRunner();
             await queryRunner.startTransaction();

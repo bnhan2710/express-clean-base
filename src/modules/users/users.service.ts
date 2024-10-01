@@ -34,6 +34,9 @@ class UserService{
                 email:true,
             }
         })
+        if(!user){
+            throw new NotFoundError(`Not found user with id = ${id}`)
+        }
         return user
     }
 
