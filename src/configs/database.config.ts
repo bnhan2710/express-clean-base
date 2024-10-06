@@ -15,7 +15,7 @@ const connection = new DataSource({
   logging: false, 
   logger: "advanced-console",     
   subscribers: [],
-  migrations: [__dirname + "/../migrations/*.ts"],
+  migrations: [__dirname + "/migrations/*.ts"],
   entities: [User , Token]
 });
 

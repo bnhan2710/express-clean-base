@@ -4,7 +4,7 @@ import { BadRequestError } from '../errors/error.response';
 const validate = (schema: any) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const { error } = schema.validate(req.body);
-        if (error) {
+        if (error) { 
             throw new BadRequestError(error.message);
         }
         next();

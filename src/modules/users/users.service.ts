@@ -53,7 +53,7 @@ class UserService{
         if(!user){
             throw new NotFoundError('User not found')
         }
-        await connection.getRepository(User).softDelete({id})
+        await connection.getRepository(User).delete({id})
     }
 }
 

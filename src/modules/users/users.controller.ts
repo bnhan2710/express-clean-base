@@ -2,12 +2,10 @@ import { Request, Response , NextFunction } from "express";
 import UserService from "../users/users.service"
 import { StatusCodes } from "http-status-codes";
 import { UpdateUserDTO } from "./dto/update-user.dto";
-interface CustomRequest extends Request {
-    user?: any; 
-}
+
 
 class UserController {
-    public async getMe(req: CustomRequest , res: Response, next :NextFunction){
+    public async getMe(req: Request , res: Response, next :NextFunction){
       res.status(StatusCodes.OK).json(await UserService.getMe(req.user.id))
     }
     public async getAllUser(req:Request, res: Response , next:NextFunction){
